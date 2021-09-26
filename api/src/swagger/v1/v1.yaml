@@ -1,0 +1,180 @@
+swagger: "2.0"
+info:
+  title: "Warehouse Service API"
+  description: >
+    Warehouse service API docs
+  version: "1.0.0"
+basePath: "/api/v1"
+securityDefinitions:
+  HMAC:
+    type: apiKey
+    in: header
+    name: Authorization
+    description: HMAC for the request
+paths:
+  /health/ping:
+    get:
+      summary: "Ping to test if service is up"
+      description: "Will return 204 no content as notification."
+      responses:
+        200:
+          description: "Service is up"
+          schema:
+            $ref: "#/definitions/PingResponse"
+        500:
+          $ref: "#/responses/ApiError"
+      tags:
+        - Health
+  /message:
+    post:
+      summary: "Stores an incoming message"
+      description: "Will store the incoming message as well as the date, leader, type and validity."
+      requestBody:
+        description: "Message intercepted from aliens."
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Service is up"
+          schema:
+            $ref: "#/definitions/PingResponse"
+        500:
+          $ref: "#/responses/ApiError"
+      tags:
+        - Messages
+    put:
+      summary: "Replace a message"
+      description: "Replace a message. You will receive the original message and a new string which 
+                    is the new message to store instead of the original. You can only allow this if the 
+                    original message is < 5 minutes old."
+      requestBody:
+        description: "Old and new messages."
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Service is up"
+          schema:
+            $ref: "#/definitions/PingResponse"
+        500:
+          $ref: "#/responses/ApiError"
+      tags:
+        - Messages
+  /messages/dates/{date1}/{date2}:
+    get:
+      summary: "Retrieve the messages between two dates"
+      description: "Fetch the messages that arrived between two given dates."
+      parameters:
+      - in: path
+        name: date1
+        description: The starting date.
+        required: true
+        schema:
+          type: date
+      - in: path
+        name: date1
+        description: The ending date.
+        required: true
+        schema:
+          type: date
+      responses:
+        200:
+          description: "Service is up"
+          schema:
+            $ref: "#/definitions/PingResponse"
+        500:
+          $ref: "#/responses/ApiError"
+      tags:
+        - Messages
+  /messages/leader/{name}:
+    get:
+      summary: "Retrieve the messages from an Alien leader"
+      description: "Fetch the messages from a given Alien leader."
+      parameters:
+      - in: path
+        name: name
+        description: Name of the Alien leader.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: "Service is up"
+          schema:
+            $ref: "#/definitions/PingResponse"
+        500:
+          $ref: "#/responses/ApiError"
+      tags:
+        - Messages
+  /messages/type/{type}:
+    get:
+      summary: "Retrieve the messages from a type"
+      description: "Fetch the messages from a given Type (INFO, DANGER, WARNING)"
+      parameters:
+      - in: path
+        name: type
+        description: Type of message.
+        required: true
+        schema:
+          type: string
+          enum:
+          - INFO
+          - WARNING
+          - DANGER
+      responses:
+        200:
+          description: "Service is up"
+          schema:
+            $ref: "#/definitions/PingResponse"
+        500:
+          $ref: "#/responses/ApiError"
+      tags:
+        - Messages
+  /messages/valid/{value}:
+    get:
+      summary: "Retrieve the messages depending on their validity"
+      description: "Fetch by invalid / valid messages (If invalid, state why is it invalid)."
+      parameters:
+      - in: path
+        name: type
+        description: Whether ot not the message is valid.
+        required: true
+        schema:
+          type: boolean
+      responses:
+        200:
+          description: "Service is up"
+          schema:
+            $ref: "#/definitions/PingResponse"
+        500:
+          $ref: "#/responses/ApiError"
+      tags:
+        - Messages
+definitions:
+  PingResponse:
+    title: Ping
+    description: Response to check if service is up.
+    type: object
+  Response:
+    title: Response
+    description: Response to endpoint
+  ApiError:
+    title: ApiError
+    description: Error representing a handled error by the API
+    type: object
+    properties:
+      errorCode:
+        type: string
+      message:
+        type: string
+    additionalProperties: false
+    minProperties: 2
+  UnauthorizedError:
+    title: Unauthorized Error
+    description: Error representing unauthorized access
+    type: object
+    properties:
+      message:
+        type: string
+    additionalProperties: false
+    minProperties: 1
