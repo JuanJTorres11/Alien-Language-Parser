@@ -1,0 +1,12 @@
+FROM node:14.17.1-alpine as BUILD
+
+WORKDIR /usr/src/app
+COPY . .
+
+RUN npm i -g check-node-version && npm ci
+
+RUN npm run build
+
+CMD npm run watch-server
+
+EXPOSE 3000

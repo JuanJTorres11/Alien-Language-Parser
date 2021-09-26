@@ -31,16 +31,3 @@ services:
       - DATABASE_DNS=postgres
     depends_on:
       - postgres
-  valienta-back:
-    image: valienta:0.1
-    environment:
-      - PORT=3000
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_DATABASE=postgres
-      - DB_USERNAME=postgres
-      - DB_PASSWORD=postgres
-    ports:
-      - 3000:3000
-    depends_on:
-      - challenge-service-db-migration
