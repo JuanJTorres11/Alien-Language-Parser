@@ -1,15 +1,11 @@
-import { BaseContext } from 'koa';
 import StatusCodes from 'http-status-codes';
 
-interface HealthCheckEvent extends Event {
-  date: string
-}
-
-async function ping(ctx: BaseContext): Promise<void> {
+async function post(ctx): Promise<void> {
+  let b = ctx.request.body
   ctx.status = StatusCodes.OK;
-  ctx.body = { pong: 'pong' };
+  ctx.body = { res: b };
 }
 
 export default {
-  ping
+  post
 };

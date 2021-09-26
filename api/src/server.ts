@@ -24,7 +24,7 @@ app.use(cors({ exposeHeaders: ['Pagination-Total'] }));
 app.use(loggingMiddleware);
 
 // Enable bodyParser with default options
-app.use(bodyParser());
+app.use(bodyParser({enableTypes: ['json', 'text']}));
 
 app.use(errorHandler);
 

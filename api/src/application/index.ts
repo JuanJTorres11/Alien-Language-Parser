@@ -1,3 +1,8 @@
+import health from './healthController';
+import postMessage from './storeMessageController';
 
+export {
+    health,
+    postMessage
+};
 
-export { default as health } from './healthController';

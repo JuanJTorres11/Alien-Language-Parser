@@ -35,6 +35,7 @@
     "devDependencies": {
         "@types/jest": "^26.0.23",
         "@types/koa__cors": "^3.0.2",
+        "@types/koa-bodyparser": "^4.3.3",
         "@types/koa-router": "^7.4.2",
         "@types/node": "^12.19.8",
         "@types/shelljs": "^0.8.0",
