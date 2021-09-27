@@ -23,7 +23,7 @@ ALTER TABLE public.leader
 CREATE TABLE public.invalid_message
 (
     id uuid NOT NULL,
-    message text COLLATE pg_catalog."default" NOT NULL,
+    reason text COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT invalid_message_pkey PRIMARY KEY (id)
 )
 WITH (
@@ -62,22 +62,22 @@ CREATE TABLE public.message
     id uuid NOT NULL DEFAULT uuid_generate_v4(),
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     text text COLLATE pg_catalog."default" NOT NULL,
-    type uuid,
-    leader uuid,
+    type_id uuid,
+    leader_id uuid,
     valid boolean,
-    invalid_reason uuid,
+    invalid_reason_id uuid,
     CONSTRAINT message_pkey PRIMARY KEY (id),
-    CONSTRAINT invalid_fk FOREIGN KEY (invalid_reason)
+    CONSTRAINT invalid_fk FOREIGN KEY (invalid_reason_id)
         REFERENCES public.invalid_message (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID,
-    CONSTRAINT leader_fk FOREIGN KEY (leader)
+    CONSTRAINT leader_fk FOREIGN KEY (leader_id)
         REFERENCES public.leader (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID,
-    CONSTRAINT type_fk FOREIGN KEY (type)
+    CONSTRAINT type_fk FOREIGN KEY (type_id)
         REFERENCES public.type (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION

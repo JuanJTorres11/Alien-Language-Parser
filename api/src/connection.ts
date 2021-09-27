@@ -9,7 +9,7 @@ async function connect(): Promise<Connection> {
     username: config.postgresDB.username,
     password: config.postgresDB.password,
     database: config.postgresDB.database,
-    synchronize: false,
+    synchronize: true,
     subscribers: [],
     logger: 'simple-console',
     entities: [
