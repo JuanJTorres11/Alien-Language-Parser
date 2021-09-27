@@ -1,7 +1,7 @@
 import health from './healthController';
 import postMessage from './storeMessageController';
 
-export {
+export default {
     health,
     postMessage
 };

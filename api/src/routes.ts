@@ -1,7 +1,6 @@
-
 import Router from 'koa-router';
 import config from './config';
-import controller = require('./application/index');
+import controller from './application/index';
 
 const routes = new Router();
 
