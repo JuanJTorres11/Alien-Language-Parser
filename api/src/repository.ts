@@ -1,4 +1,4 @@
-import { getRepository } from "typeorm";
+import { getRepository, Between } from "typeorm";
 import InvalidMessage from "./domain/invalid_message";
 import Leader from "./domain/leader";
 import Message from './domain/message'
@@ -26,6 +26,11 @@ async function saveMessage(msg: string, valid: boolean, type?: string, leader?: 
     return true;
 }
 
+async function getMessagesDates(date1: Date, date2:Date): Promise<Message[]> {
+    return await getRepository(Message).find({createdAt: Between(date1, date2)});
+}
+
 export {
-    saveMessage
+    saveMessage,
+    getMessagesDates
 }
