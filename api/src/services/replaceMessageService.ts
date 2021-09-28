@@ -1,15 +1,15 @@
-import { BaseContext } from 'koa';
-import StatusCodes from 'http-status-codes';
+import { getMessage } from './../repository'
+import services from './index';
 
-interface HealthCheckEvent extends Event {
-  date: string
-}
-
-async function ping(ctx: BaseContext): Promise<void> {
-  ctx.status = StatusCodes.OK;
-  ctx.body = { pong: 'pong' };
+async function putMessage(oldMsg:string, newMsg: string): Promise<[boolean, string]> {
+  const messageRetrieved = await getMessage(oldMsg);
+  if ((Date.now() - messageRetrieved?.createdAt.getTime())/60000 < 5) {
+    return await services.postMessageService.verifyMessage(newMsg, messageRetrieved.id);
+  } else {
+    return [false, "More than 5 minutes have passed"];
+  }
 }
 
 export default {
-  ping
+  putMessage
 };

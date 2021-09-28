@@ -5,8 +5,9 @@ import Message from './domain/message'
 import Type from "./domain/type";
 import logger from "./logger";
 
-async function saveMessage(msg: string, valid: boolean, type?: string, leader?: string, invalid?: string): Promise<boolean> {
+async function saveMessage(msg: string, valid: boolean, type?: string, leader?: string, invalid?: string, id?: string): Promise<boolean> {
     let message = new Message(msg, valid);
+    message.id = id;
     if (valid) {
         message.type = await getRepository(Type).findOneOrFail({ value: type })
             .catch(() =>
@@ -24,6 +25,10 @@ async function saveMessage(msg: string, valid: boolean, type?: string, leader?: 
         return false;
     });
     return true;
+}
+
+async function getMessage(msg:string): Promise<Message> {
+    return await getRepository(Message).findOneOrFail({text: msg}).catch(() => null)
 }
 
 async function getMessagesDates(date1: Date, date2: Date): Promise<Message[]> {
@@ -54,7 +59,7 @@ async function getMessagesValid(valid: boolean) {
             valid: true
         });
     } else {
-        return await getRepository(Message).find({
+        return await getRepository(Message).find({                            
             relations: ["invalidReason"],
             where: {
                 valid: false
@@ -65,6 +70,7 @@ async function getMessagesValid(valid: boolean) {
 }
 
 export {
+    getMessage,
     saveMessage,
     getMessagesDates,
     getMessagesLeader,
