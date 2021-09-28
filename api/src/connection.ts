@@ -1,5 +1,9 @@
 import { createConnection, Connection } from 'typeorm';
 import config from './config';
+import InvalidMessage from './domain/invalid_message';
+import Leader from './domain/leader';
+import Message from './domain/message';
+import Type from './domain/type';
 
 async function connect(): Promise<Connection> {
   return createConnection({
@@ -13,8 +17,12 @@ async function connect(): Promise<Connection> {
     subscribers: [],
     logger: 'simple-console',
     entities: [
-      `${__dirname}/domain/*.js`,
-      `${__dirname}/domain/*.ts`
+      // `${__dirname}/domain/*.js`,
+      // `${__dirname}/domain/*.ts`
+      Message,
+      Leader,
+      Type,
+      InvalidMessage,
     ]
   });
 }

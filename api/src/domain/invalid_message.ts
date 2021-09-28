@@ -10,6 +10,7 @@ export default class InvalidMessage {
 
   @Column({
     type: 'text',
+    unique: true,
     name: 'reason'
   })
   reason: string;

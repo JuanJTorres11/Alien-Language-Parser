@@ -10,9 +10,9 @@ export default class Message {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Generated()
   @Column({
-    type: 'timestamptz',
+    type: 'timestamp with time zone',
+    default: () => 'CURRENT_TIMESTAMP',
     name: 'created_at'
   })
   createdAt: Date;

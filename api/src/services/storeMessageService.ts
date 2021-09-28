@@ -1,45 +1,49 @@
-import { types } from "util";
+import { saveMessage } from './../repository'
 
-
-async function verifyMessage(msg: string): Promise<string> {
+async function verifyMessage(msg: string): Promise<[boolean, string]> {
   const words = msg.trim().split(" ");
   const leader = verifySender(words);
-  if (leader[1] != "")
-    return leader[1];
+  let invalid_reason = ""
+  if (!leader[0]) {
+    invalid_reason = leader[1];
+    const res = await saveMessage(msg, false, null, null, invalid_reason);
+    return [res, "INVALID MESSAGE: " + invalid_reason];
+  }
+
   const valid = verifyWordValidity(words);
   if (!valid) {
-    return "Words do not have only 3 consonants";
+    invalid_reason = "Words do not have only 3 consonants";
+    const res = await saveMessage(msg, false, null, null, invalid_reason);
+    return [res, "INVALID MESSAGE: " + invalid_reason];
   }
+
   const type = verifyType(words);
   if (type[0] == "A") {
-    return type;
+    invalid_reason = type;
+    const res = await saveMessage(msg, false, null, null, invalid_reason);
+    return [res, "INVALID MESSAGE: " + invalid_reason];
   }
-  return `Message from ${leader[0]} of type ${type}`;
+
+  const res = await saveMessage(msg, true, type, leader[1], invalid_reason);
+  return [res, `Message from ${leader[1]} of type ${type}`];
 }
 
-function verifySender(words: string[]): string[] {
+function verifySender(words: string[]): [boolean, string] {
   const leader = words[0][0];
-  let reason = "";
   if (words.length == 1) {
-    reason = "Not a set of words";
-    return ["", reason];
+    return [false, "Not a set of words"];
   }
-  words.forEach(word => {
-    if (word[0] != leader) {
-      reason = "Distracting message";
-      return ["", reason];
-    }
-  });
-  return [leader, reason];
+  const valid = words.every(word => word[0] == leader);
+
+  if (valid) {
+    return [true, leader];
+  } else {
+    return [false, "Distracting message"];
+  }
 }
 
 function verifyWordValidity(words: string[]): boolean {
-  words.forEach(word => {
-    if (word.slice(1).match(/[^aeiou]/g).length != 3) {
-      return false;
-    }
-  });
-  return true;
+  return words.every(word => word.slice(1).match(/[^aeiou]/g).length == 3);
 }
 
 function verifyType(words: string[]): string {

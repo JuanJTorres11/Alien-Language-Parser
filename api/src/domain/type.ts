@@ -10,6 +10,7 @@ export default class Type {
 
   @Column({
     type: 'text',
+    unique: true,
     name: 'value'
   })
   value: string;

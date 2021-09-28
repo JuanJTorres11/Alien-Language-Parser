@@ -9,7 +9,8 @@ export default class Leader {
   id: string;
 
   @Column({
-    type: 'text',
+    type: 'char',
+    unique: true,
     name: 'name'
   })
   name: string;
