@@ -48,9 +48,26 @@ async function getMessagesType(type: string) {
     });
 }
 
+async function getMessagesValid(valid: boolean) {
+    if (valid) {
+        return await getRepository(Message).find({
+            valid: true
+        });
+    } else {
+        return await getRepository(Message).find({
+            relations: ["invalidReason"],
+            where: {
+                valid: false
+            },
+        });
+    }
+
+}
+
 export {
     saveMessage,
     getMessagesDates,
     getMessagesLeader,
-    getMessagesType
+    getMessagesType,
+    getMessagesValid
 }

@@ -1,15 +1,15 @@
-import { BaseContext } from 'koa';
-import StatusCodes from 'http-status-codes';
+import { getMessagesValid } from "./../repository";
+import Message from "./../domain/message";
 
-interface HealthCheckEvent extends Event {
-  date: string
-}
-
-async function ping(ctx: BaseContext): Promise<void> {
-  ctx.status = StatusCodes.OK;
-  ctx.body = { pong: 'pong' };
+async function getMessages(valid: boolean): Promise<[boolean, Message[]]> {
+  const messages = await getMessagesValid(valid);
+  if (messages.length == 0) {
+    return [false, []]
+  } else {
+    return [true, messages]
+  }
 }
 
 export default {
-  ping
+  getMessages
 };
