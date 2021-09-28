@@ -36,12 +36,21 @@ async function getMessagesLeader(leaderName: string) {
         where: {
             name: leaderName,
         },
-        
+    });
+}
+
+async function getMessagesType(type: string) {
+    return await getRepository(Type).find({
+        relations: ["messages"],
+        where: {
+            value: type,
+        },
     });
 }
 
 export {
     saveMessage,
     getMessagesDates,
-    getMessagesLeader
+    getMessagesLeader,
+    getMessagesType
 }

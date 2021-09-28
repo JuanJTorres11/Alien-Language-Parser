@@ -15,7 +15,7 @@ export default class Type {
   })
   value: string;
 
-  @OneToMany(() => Message, (msg) => msg.leader)
+  @OneToMany(() => Message, (msg) => msg.type)
   messages: Message[];
 
   constructor(value?: string) {
