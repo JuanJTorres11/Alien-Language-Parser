@@ -26,11 +26,22 @@ async function saveMessage(msg: string, valid: boolean, type?: string, leader?: 
     return true;
 }
 
-async function getMessagesDates(date1: Date, date2:Date): Promise<Message[]> {
-    return await getRepository(Message).find({createdAt: Between(date1, date2)});
+async function getMessagesDates(date1: Date, date2: Date): Promise<Message[]> {
+    return await getRepository(Message).find({ createdAt: Between(date1, date2) });
+}
+
+async function getMessagesLeader(leaderName: string) {
+    return await getRepository(Leader).find({
+        relations: ["messages"],
+        where: {
+            name: leaderName,
+        },
+        
+    });
 }
 
 export {
     saveMessage,
-    getMessagesDates
+    getMessagesDates,
+    getMessagesLeader
 }
