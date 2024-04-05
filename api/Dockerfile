@@ -1,4 +1,4 @@
-FROM node:14.17.1-alpine as BUILD
+FROM node:14.21.0-alpine as BUILD
 
 WORKDIR /usr/src/app
 COPY . .
@@ -10,7 +10,7 @@ RUN npm test
 RUN npm run build
 
 # Production image stage
-FROM node:14.17.1-alpine as PROD
+FROM node:14.21.0-alpine as PROD
 
 WORKDIR /usr/src/app
 
