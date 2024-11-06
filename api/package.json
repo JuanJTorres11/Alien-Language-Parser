@@ -62,7 +62,7 @@
         "koa-bodyparser": "^4.3.0",
         "koa-helmet": "^6.1.0",
         "koa-router": "^10.0.0",
-        "newrelic": "^7.5.1",
+        "newrelic": "^12.6.0",
         "pg": "^8.6.0",
         "swagger2": "^3.0.0",
         "swagger2-koa": "^3.0.0",
